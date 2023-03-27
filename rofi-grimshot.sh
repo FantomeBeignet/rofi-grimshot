@@ -14,6 +14,8 @@ save="Save file"
 
 tmp_filename="/tmp/screenshot_$(date +%d)-$(date +%m)-$(date +%y)_$(date +%T).png"
 
+# Function taken directly from grimshot
+# https://github.com/swaywm/sway/blob/master/contrib/grimshot
 target_directory() {
   test -f "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" && \
     . "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
