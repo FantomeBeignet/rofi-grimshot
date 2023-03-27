@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Current Theme
-dir="$HOME/.config/rofi"
 theme='grimshot'
 
 active="Active window"
@@ -26,7 +25,7 @@ target_directory() {
 rofi_cmd() {
 	rofi -dmenu \
 		-mesg "Screenshot" \
-		-theme ${dir}/${theme}.rasi
+		-theme ${theme}.rasi
 }
 
 # Pass variables to rofi dmenu
@@ -43,7 +42,7 @@ mode_cmd() {
 		-theme-str 'textbox {horizontal-align: 0.5;}' \
 		-dmenu \
 		-mesg 'Screenshot taken' \
-		-theme ${dir}/${theme}.rasi
+		-theme ${theme}.rasi
 }
 
 # Ask to select mode
