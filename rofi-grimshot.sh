@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Current Theme
-dir="$XDG_CONFIG_HOME/rofi"
+dir="$HOME/.config/rofi"
 theme='grimshot'
 
 active="Active window"
