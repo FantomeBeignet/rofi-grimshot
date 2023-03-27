@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+# Current Theme
+dir="$XDG_CONFIG_HOME/rofi"
+theme='grimshot'
+
+active="Active window"
+screen="All visible outputs"
+output="Currently active output"
+area="Select an area"
+window="Select a window"
+
+copy="Copy to clipboard"
+save="Save file"
+
+tmp_filename="/tmp/screenshot_$(date +%d)-$(date +%m)-$(date +%y)_$(date +%T).png"
+
+target_directory() {
+  test -f "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" && \
+    . "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
+
+  echo "${XDG_SCREENSHOTS_DIR:-${XDG_PICTURES_DIR:-$HOME}}"
+}
+
+# Rofi CMD
+rofi_cmd() {
+	rofi -dmenu \
+		-mesg "Screenshot" \
+		-theme ${dir}/${theme}.rasi
+}
+
+# Pass variables to rofi dmenu
+run_rofi() {
+	echo -e "$active\n$screen\n$output\n$area\n$window" | rofi_cmd
+}
+
+# Mode selection
+mode_cmd() {
+	rofi -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 250px;}' \
+		-theme-str 'mainbox {children: [ "message", "listview" ];}' \
+		-theme-str 'listview {columns: 1; lines: 2;}' \
+		-theme-str 'element-text {horizontal-align: 0.5;}' \
+		-theme-str 'textbox {horizontal-align: 0.5;}' \
+		-dmenu \
+		-mesg 'Screenshot taken' \
+		-theme ${dir}/${theme}.rasi
+}
+
+# Ask to select mode
+select_mode() {
+	echo -e "$copy\n$save" | mode_cmd
+}
+
+menu_option="$(run_rofi)"
+case $menu_option in 
+	$active)
+	grimshot save active $tmp_filename > /dev/null 2>&1
+		;;
+	$screen)
+	grimshot save screen $tmp_filename > /dev/null 2>&1
+		;;
+	$output)
+	grimshot save output $tmp_filename > /dev/null 2>&1
+		;;
+	$area)
+	grimshot save area $tmp_filename > /dev/null 2>&1
+		;;
+	$window)
+	grimshot save window $tmp_filename > /dev/null 2>&1
+		;;
+esac
+mode="$(select_mode)"
+case $mode in
+	$copy)
+	wl-copy --type image/png < $tmp_filename
+		;;
+	$save)
+	cp $tmp_filename $(target_directory)
+		;;
+esac
+rm $tmp_filename
