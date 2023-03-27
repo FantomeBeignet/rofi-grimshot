@@ -51,30 +51,33 @@ select_mode() {
 }
 
 menu_option="$(run_rofi)"
-case $menu_option in 
-	$active)
-	grimshot save active $tmp_filename > /dev/null 2>&1
-		;;
-	$screen)
-	grimshot save screen $tmp_filename > /dev/null 2>&1
-		;;
-	$output)
-	grimshot save output $tmp_filename > /dev/null 2>&1
-		;;
-	$area)
-	grimshot save area $tmp_filename > /dev/null 2>&1
-		;;
-	$window)
-	grimshot save window $tmp_filename > /dev/null 2>&1
-		;;
-esac
-mode="$(select_mode)"
-case $mode in
-	$copy)
-	wl-copy --type image/png < $tmp_filename
-		;;
-	$save)
-	cp $tmp_filename $(target_directory)
-		;;
-esac
-rm $tmp_filename
+if [[ ! -z "$menu_option" ]]
+then
+	case $menu_option in 
+		$active)
+		grimshot save active $tmp_filename > /dev/null 2>&1
+			;;
+		$screen)
+		grimshot save screen $tmp_filename > /dev/null 2>&1
+			;;
+		$output)
+		grimshot save output $tmp_filename > /dev/null 2>&1
+			;;
+		$area)
+		grimshot save area $tmp_filename > /dev/null 2>&1
+			;;
+		$window)
+		grimshot save window $tmp_filename > /dev/null 2>&1
+			;;
+	esac
+	mode="$(select_mode)"
+	case $mode in
+		$copy)
+		wl-copy --type image/png < $tmp_filename
+			;;
+		$save)
+		cp $tmp_filename $(target_directory)
+			;;
+	esac
+	rm $tmp_filename
+fi
