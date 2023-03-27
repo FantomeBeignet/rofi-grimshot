@@ -71,13 +71,16 @@ then
 			;;
 	esac
 	mode="$(select_mode)"
-	case $mode in
-		$copy)
-		wl-copy --type image/png < $tmp_filename
-			;;
-		$save)
-		cp $tmp_filename $(target_directory)
-			;;
-	esac
+	if [[ ! -z "$mode" ]]
+	then
+		case $mode in
+			$copy)
+			wl-copy --type image/png < $tmp_filename
+				;;
+			$save)
+			cp $tmp_filename $(target_directory)
+				;;
+		esac
+	fi
 	rm $tmp_filename
 fi
